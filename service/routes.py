@@ -124,6 +124,7 @@ class InventoryResource(Resource):
             app.logger.info('Inventory with id [%s] was deleted', inventory_id)
         return '', status.HTTP_204_NO_CONTENT
 
+
 ######################################################################
 #  PATH: /inventories
 ######################################################################
@@ -184,6 +185,7 @@ class InventoryCollection(Resource):
 
         return inventory.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
 
+
 ######################################################################
 #  PATH: /inventories/clear
 ######################################################################
@@ -215,6 +217,7 @@ class ClearResource(Resource):
             inventory.delete()
             app.logger.info('Inventory with id [%s] was deleted', inventory.inventory_id)
         return '', status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 # RETRIEVE AN INVENTORY   (#story 4)
