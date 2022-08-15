@@ -183,7 +183,7 @@ class TestInventoryServer(TestCase):
         inventory = self._create_inventories(1)[0]
         # print(inventory)
         resp = self.client.get(
-            f"{BASE_URL}/{inventory.inventory_id}",
+            f"{BASE_URL_NEW }/{inventory.inventory_id}",
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -244,7 +244,6 @@ class TestInventoryServer(TestCase):
         """It should Delete an Inventory"""
         # generate fake request json
         requests_json = self._generate_inventories_non_duplicate(1, 1)
-
         # create
         resp = self.client.post(BASE_URL_NEW, json=requests_json[0])
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
@@ -410,7 +409,7 @@ class TestInventoryServer(TestCase):
 
     def test_read_inventory_not_found(self):
         """It should not Read the Inventory when it is not found"""
-        resp = self.client.get(f"{BASE_URL}/0")
+        resp = self.client.get(f"{BASE_URL_NEW}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_inventory_not_found(self):

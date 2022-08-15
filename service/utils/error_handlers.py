@@ -17,7 +17,6 @@
 """
 Module: error_handlers
 """
-from flask import jsonify
 from service.models import DataValidationError, DuplicateKeyValueError
 from service import app, api
 from . import status
@@ -47,14 +46,3 @@ def duplicate_key_value_error(error):
         'error': "Conflict",
         'message': message
     }, status.HTTP_409_CONFLICT
-
-
-@app.errorhandler(status.HTTP_404_NOT_FOUND)
-def not_found(error):
-    """Handles resources not found with 404_NOT_FOUND"""
-    message = str(error)
-    app.logger.warning(message)
-    return (
-        jsonify(status=status.HTTP_404_NOT_FOUND, error="Not Found", message=message),
-        status.HTTP_404_NOT_FOUND,
-    )

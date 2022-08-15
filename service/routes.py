@@ -12,7 +12,7 @@ Describe what your service does here
 # # IMPORT DEPENDENCIES
 # ######################################################################
 
-from flask import jsonify, request, make_response, abort
+from flask import jsonify, make_response
 from flask_restx import Resource, fields, reqparse
 from service.models import Inventory, RestockLevel, Condition
 from .utils import status  # HTTP Status Codes
@@ -91,7 +91,6 @@ class InventoryResource(Resource):
         This endpoint will update an Inventory based the body that is posted
         """
         app.logger.info("Request to update inventory with id: %s", inventory_id)
-        check_content_type("application/json")
 
         inventory = Inventory.find(inventory_id)
         if not inventory:
@@ -123,6 +122,30 @@ class InventoryResource(Resource):
             inventory.delete()
             app.logger.info('Inventory with id [%s] was deleted', inventory_id)
         return '', status.HTTP_204_NO_CONTENT
+
+    # ------------------------------------------------------------------
+    # RETRIEVE AN NEW INVENTORY (#story 77)
+    # ------------------------------------------------------------------
+    @api.doc('read_an inventory based on inventory-id')
+    @api.response(404, 'Inventory with id could not be found.')
+    # @api.expect(inventory_model)
+    @api.marshal_with(inventory_model, code=200)
+    def get(self, inventory_id):
+        """
+        Retrieve a single Inventory
+
+        This endpoint will return an Inventory based on it's id
+        """
+        app.logger.info("Request for Inventory with id: %s", inventory_id)
+        inventory = Inventory.find(inventory_id)
+        if not inventory:
+            abort(
+                status.HTTP_404_NOT_FOUND,
+                f"Inventory with id '{inventory_id}' could not be found.",
+            )
+
+        # return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
+        return inventory.serialize(), status.HTTP_200_OK
 
 
 ######################################################################
@@ -219,27 +242,6 @@ class ClearResource(Resource):
         return '', status.HTTP_204_NO_CONTENT
 
 
-######################################################################
-# RETRIEVE AN INVENTORY   (#story 4)
-######################################################################
-@app.route("/inventories/<int:inventory_id>", methods=["GET"])
-def get_inventory(inventory_id):
-    """
-    Retrieve a single Inventory
-
-    This endpoint will return an Inventory based on it's id
-    """
-    app.logger.info("Request for Inventory with id: %s", inventory_id)
-    inventory = Inventory.find(inventory_id)
-    if not inventory:
-        abort(
-            status.HTTP_404_NOT_FOUND,
-            f"Inventory with id '{inventory_id}' could not be found.",
-        )
-
-    return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
-
-
 ############################################################
 # Health Endpoint
 ############################################################
@@ -248,17 +250,12 @@ def health():
     """Health Status"""
     return make_response(jsonify(status=200, message="OK"), status.HTTP_200_OK)
 
+######################################################################
+#  U T I L I T Y   F U N C T I O N S
+######################################################################
 
-# ######################################################################
-# #  U T I L I T Y   F U N C T I O N S
-# ######################################################################
-def check_content_type(media_type):
-    """Checks that the media type is correct"""
-    content_type = request.headers.get("Content-Type")
-    if content_type and content_type == media_type:
-        return
-    app.logger.error("Invalid Content-Type: %s", content_type)
-    abort(
-        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-        f"Content-Type must be {media_type}",
-    )
+
+def abort(error_code: int, message: str):
+    """Logs errors before aborting"""
+    app.logger.error(message)
+    api.abort(error_code, message)

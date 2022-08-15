@@ -69,7 +69,7 @@ Scenario: Read a inventory
     When I press the "Clear" button
     And I set the "Inventory ID" to "10000"
     And I press the "Retrieve" button
-    Then I should see the message "404 Not Found: Inventory with id '10000' could not be found."
+    Then I should see the message "Inventory with id '10000' could not be found"
     When I press the "Clear" button
     And I press the "Retrieve" button
     Then I should see " " in the "Product Id" field
@@ -168,4 +168,4 @@ Scenario: Delete an inventory
 
     When I paste the "Inventory_id" field
     And I press the "Retrieve" button
-    Then I should see the message containing "404 Not Found"
+    Then I should see the message "could not be found"

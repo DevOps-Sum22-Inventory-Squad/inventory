@@ -126,7 +126,7 @@ $(function () {
         } else {
             ajax = $.ajax({
                 type: "GET",
-                url: `/inventories/${inventory_id}`,
+                url: `/api/inventories/${inventory_id}`,
                 contentType: "application/json",
                 data: ''
             })
@@ -141,6 +141,7 @@ $(function () {
         ajax.fail(function(res){
             clear_form_data()
             flash_message(res.responseJSON.message)
+            // flash_message("404 Not Found: inventory_id not found")
         });
 
     });
