@@ -77,6 +77,37 @@ class InventoryResource(Resource):
     """
 
     # ------------------------------------------------------------------
+    # UPDATE AN EXISTING INVENTORY
+    # ------------------------------------------------------------------
+    @api.doc('update_inventories')
+    @api.response(404, 'Inventory not found')
+    @api.response(400, 'The posted Inventory data was not valid')
+    @api.expect(inventory_model)
+    @api.marshal_with(inventory_model)
+    def put(self, inventory_id):
+        """
+        Update an Inventory
+
+        This endpoint will update an Inventory based the body that is posted
+        """
+        app.logger.info("Request to update inventory with id: %s", inventory_id)
+        check_content_type("application/json")
+
+        inventory = Inventory.find(inventory_id)
+        if not inventory:
+            abort(
+                status.HTTP_404_NOT_FOUND,
+                f"Inventory with id '{inventory_id}' was not found.",
+            )
+        # inventory.deserialize(request.get_json())
+        # inventory.id = inventory_id
+        # inventory.update()
+        app.logger.debug('Payload = %s', api.payload)
+        data = api.payload
+        inventory.update(data)
+        return inventory.serialize(), status.HTTP_200_OK
+
+    # ------------------------------------------------------------------
     # DELETE AN INVENTORY
     # ------------------------------------------------------------------
     @api.doc('delete_inventories')
@@ -92,6 +123,7 @@ class InventoryResource(Resource):
             inventory.delete()
             app.logger.info('Inventory with id [%s] was deleted', inventory_id)
         return '', status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 #  PATH: /inventories
@@ -153,6 +185,7 @@ class InventoryCollection(Resource):
 
         return inventory.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
 
+
 ######################################################################
 #  PATH: /inventories/clear
 ######################################################################
@@ -185,6 +218,7 @@ class ClearResource(Resource):
             app.logger.info('Inventory with id [%s] was deleted', inventory.inventory_id)
         return '', status.HTTP_204_NO_CONTENT
 
+
 ######################################################################
 # RETRIEVE AN INVENTORY   (#story 4)
 ######################################################################
@@ -203,71 +237,6 @@ def get_inventory(inventory_id):
             f"Inventory with id '{inventory_id}' could not be found.",
         )
 
-    return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
-
-
-# # ######################################################################
-# # # UPDATE AN EXISTING INVENTORY  (#story 10)
-# # ######################################################################
-@app.route("/inventories/<int:inventory_id>", methods=["PUT"])
-def update_inventory(inventory_id):
-    """
-    Update an Inventory
-
-    This endpoint will update an Inventory based the body that is posted
-    """
-    app.logger.info("Request to update inventory with id: %s", inventory_id)
-    check_content_type("application/json")
-
-    inventory = Inventory.find(inventory_id)
-    if not inventory:
-        abort(
-            status.HTTP_404_NOT_FOUND,
-            f"Inventory with id '{inventory_id}' was not found.",
-        )
-    # inventory.deserialize(request.get_json())
-    # inventory.id = inventory_id
-    # inventory.update()
-    inventory.update(request.get_json())
-    return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
-
-######################################################################
-# UPDATE QUANTITY UNDER PRODUCT_ID & CONDITION (Action)
-######################################################################
-@app.route("/inventories/changeQuantity", methods=["PUT"])
-def update_inventory_by_product_id_condition():
-    """
-    Update an Inventory by product_id & condition
-
-    This endpoint will update an Inventory based on the body that is posted
-    """
-    check_content_type("application/json")
-
-    request_dict = request.get_json()
-    req_product_id = request_dict["product_id"]
-    req_condition = request_dict["condition"]
-
-    app.logger.info(
-        "Request to update inventory with "
-        "product_id: %s & condition: %s",
-        req_product_id, req_condition)
-
-    inventories = Inventory.find_by_attributes(
-        {"product_id": req_product_id,
-         "condition": req_condition}
-    ).all()
-    if not inventories:
-        abort(
-            status.HTTP_404_NOT_FOUND,
-            f"Inventory with product_id '{req_product_id}' & "
-            f"condition '{req_condition}' was not found.",
-        )
-    assert (len(inventories) == 1)
-    app.logger.info("%s", type(inventories))
-    inventory = inventories[0]
-    # inventory.deserialize(request_dict)
-    # inventory.update()
-    inventory.update(request_dict)
     return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
 
 
