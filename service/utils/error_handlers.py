@@ -22,7 +22,6 @@ from service.models import DataValidationError, DuplicateKeyValueError
 from service import app
 from . import status
 
-
 ######################################################################
 # Error Handlers
 ######################################################################
@@ -75,3 +74,7 @@ def data_conflict(error):
         ),
         status.HTTP_409_CONFLICT,
     )
+@api.errorhandler(NoResultFound)
+def handle_no_result_exception(error):
+    '''Return a custom not found error message and 404 status code'''
+    return {'message': error.specific}, 404

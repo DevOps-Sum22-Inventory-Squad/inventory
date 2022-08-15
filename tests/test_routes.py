@@ -228,7 +228,7 @@ class TestInventoryServer(TestCase):
         new_inventory.pop("restock_level")  # check for partial update
         logging.debug("Updated %s", new_inventory)
         resp = self.client.put(
-            f"{BASE_URL}/{inventory_id}",
+            f"{BASE_NEW_URL}/{inventory_id}",
             json=new_inventory
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
