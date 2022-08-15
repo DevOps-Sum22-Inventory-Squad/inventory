@@ -98,8 +98,8 @@ class InventoryResource(Resource):
     @api.doc('read_an inventory based on inventory-id')
     @api.response(404, 'Inventory with id could not be found.')
     # @api.expect(inventory_model)
-    @api.marshal_with(inventory_model, code = 200)
-    def get(self,inventory_id):
+    @api.marshal_with(inventory_model, code=200)
+    def get(self, inventory_id):
         """
         Retrieve a single Inventory
 
@@ -177,10 +177,6 @@ class InventoryCollection(Resource):
 
         return inventory.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
 
-
-
-    
-
 # ######################################################################
 # # RETRIEVE AN INVENTORY   (#story 4)
 # ######################################################################
@@ -209,12 +205,10 @@ class InventoryCollection(Resource):
 def update_inventory(inventory_id):
     """
     Update an Inventory
-
     This endpoint will update an Inventory based the body that is posted
     """
     app.logger.info("Request to update inventory with id: %s", inventory_id)
     check_content_type("application/json")
-
     inventory = Inventory.find(inventory_id)
     if not inventory:
         abort(
