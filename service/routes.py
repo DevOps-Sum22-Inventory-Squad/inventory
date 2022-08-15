@@ -147,8 +147,6 @@ class InventoryResource(Resource):
         # return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
         return inventory.serialize(), status.HTTP_200_OK
 
-
-
 ######################################################################
 #  PATH: /inventories
 ######################################################################
@@ -241,8 +239,6 @@ class ClearResource(Resource):
             inventory.delete()
             app.logger.info('Inventory with id [%s] was deleted', inventory.inventory_id)
         return '', status.HTTP_204_NO_CONTENT
-
-
 
 # # ######################################################################
 # # # UPDATE AN EXISTING INVENTORY  (#story 10)
