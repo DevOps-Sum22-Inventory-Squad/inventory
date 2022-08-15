@@ -240,11 +240,11 @@ class TestInventoryServer(TestCase):
         self.assertEqual(
             updated["restock_level"], inventory.restock_level.name)
 
+
     def test_delete_inventory(self):
         """It should Delete an Inventory"""
         # generate fake request json
         requests_json = self._generate_inventories_non_duplicate(1, 1)
-
         # create
         resp = self.client.post(BASE_URL_NEW, json=requests_json[0])
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
