@@ -206,7 +206,6 @@ class ClearResource(Resource):
             inventory.delete()
             app.logger.info('Inventory with id [%s] was deleted', inventory.inventory_id)
         return '', status.HTTP_204_NO_CONTENT
->>>>>>> 5f2d2c354c4fd7c1977c8f3ee34010b5fc3e57f8
 
 #     This endpoint will return an Inventory based on it's id
 #     """
