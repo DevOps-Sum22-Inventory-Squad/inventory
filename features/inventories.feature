@@ -146,4 +146,4 @@ Scenario: Delete an inventory
 
     When I paste the "Inventory_id" field
     And I press the "Retrieve" button
-    Then I should see the message containing "404 Not Found"
+    Then I should see the message containing "could not be found"
