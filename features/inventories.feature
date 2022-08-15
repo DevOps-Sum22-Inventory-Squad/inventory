@@ -69,7 +69,7 @@ Scenario: Read a inventory
     When I press the "Clear" button
     And I set the "Inventory ID" to "10000"
     And I press the "Retrieve" button
-    Then I should see the message containing "Inventory with id '10000' could not be found"
+    Then I should see the message "Inventory with id '10000' could not be found"
     When I press the "Clear" button
     And I press the "Retrieve" button
     Then I should see " " in the "Product Id" field
@@ -97,7 +97,8 @@ Scenario: Update an Inventory
     And I press the "Search" button
     Then I should see the message "Success"
     And I should see "1" "NEW" "1" and "MODERATE" in the "4st" row of the results
-    When I set the "Product Id" to "1"
+    When I press the "Clear" button
+    And I set the "Product Id" to "1"
     And I select "NEW" in the "Condition" dropdown
     And I press the "Search" button
     Then I should see the message "Success"
@@ -167,4 +168,4 @@ Scenario: Delete an inventory
 
     When I paste the "Inventory_id" field
     And I press the "Retrieve" button
-    Then I should see the message containing "could not be found"
+    Then I should see the message "could not be found"
