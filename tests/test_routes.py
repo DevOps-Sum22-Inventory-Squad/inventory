@@ -240,7 +240,6 @@ class TestInventoryServer(TestCase):
         self.assertEqual(
             updated["restock_level"], inventory.restock_level.name)
 
-
     def test_delete_inventory(self):
         """It should Delete an Inventory"""
         # generate fake request json
