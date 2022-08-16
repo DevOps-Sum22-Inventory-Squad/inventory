@@ -13,6 +13,7 @@ Describe what your service does here
 # ######################################################################
 
 from flask_restx import Resource, fields, reqparse
+from flask import jsonify, make_response
 from service.models import Inventory, RestockLevel, Condition
 from .utils import status  # HTTP Status Codes
 # Import Flask application
@@ -237,17 +238,23 @@ class ClearResource(Resource):
         return '', status.HTTP_204_NO_CONTENT
 
 
-######################################################################
-#  PATH: /health
-######################################################################
-@api.route('/health', strict_slashes=False)
-class HealthResource(Resource):
-    """ Handles routes to check health status """
-    @api.doc('check_health_status')
-    def get(self):
-        """Health Status"""
-        return {'status': 200, 'message': "OK"}, status.HTTP_200_OK
-
+############################################################
+# Health Endpoint
+############################################################
+@app.route("/health")
+def health():
+    """Health Status"""
+    return make_response(jsonify(status=200, message="OK"), status.HTTP_200_OK)
+# ######################################################################
+# #  PATH: /health
+# ######################################################################
+# @api.route('/health', strict_slashes=False)
+# class HealthResource(Resource):
+#     """ Handles routes to check health status """
+#     @api.doc('check_health_status')
+#     def get(self):
+#         """Health Status"""
+#         return {'status': 200, 'message': "OK"}, status.HTTP_200_OK
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
