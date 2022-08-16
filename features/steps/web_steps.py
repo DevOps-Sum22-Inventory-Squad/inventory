@@ -55,12 +55,6 @@ def step_impl(context, text, element_name):
     element = Select(context.driver.find_element_by_id(element_id))
     expect(element.first_selected_option.text).to_equal(text)
 
-# @then('the "{element_name}" field should be empty')
-# def step_impl(context, element_name):
-#     element_id = ID_PREFIX + element_name.lower().replace(' ', '_')
-#     element = context.driver.find_element_by_id(element_id)
-#     expect(element.get_attribute('value')).to_be(u'')
-
 # ##################################################################
 # # These two function simulate copy and paste
 # ##################################################################
@@ -113,22 +107,6 @@ def step_impl(context):
     table_content = context.driver.find_elements_by_xpath(f"//table[@class='table table-striped']/tbody")
     expect(len(table_content)).value == 0
 
-# @then('I should see "{name}" in the results')
-# def step_impl(context, name):
-#     found = WebDriverWait(context.driver, context.WAIT_SECONDS).until(
-#         expected_conditions.text_to_be_present_in_element(
-#             (By.ID, 'search_results'),
-#             name
-#         )
-#     )
-#     expect(found).to_be(True)
-
-# @then('I should not see "{name}" in the results')
-# def step_impl(context, name):
-#     element = context.driver.find_element_by_id('search_results')
-#     error_msg = "I should not see '%s' in '%s'" % (name, element.text)
-#     ensure(name in element.text, False, error_msg)
-
 @then('I should see the message "{message}"')
 def step_impl(context, message):
     found = WebDriverWait(context.driver, context.WAIT_SECONDS).until(
@@ -156,13 +134,3 @@ def step_impl(context, text_string, element_name):
         )
     )
     expect(found).to_be(True)
-
-# @when('I change "{element_name}" to "{text_string}"')
-# def step_impl(context, element_name, text_string):
-#     element_id = ID_PREFIX + element_name.lower().replace(' ', '_')
-#     element = WebDriverWait(context.driver, context.WAIT_SECONDS).until(
-#         expected_conditions.presence_of_element_located((By.ID, element_id))
-#     )
-#     element.clear()
-#     element.send_keys(text_string)
-
