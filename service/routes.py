@@ -245,16 +245,7 @@ class ClearResource(Resource):
 def health():
     """Health Status"""
     return make_response(jsonify(status=200, message="OK"), status.HTTP_200_OK)
-# ######################################################################
-# #  PATH: /health
-# ######################################################################
-# @api.route('/health', strict_slashes=False)
-# class HealthResource(Resource):
-#     """ Handles routes to check health status """
-#     @api.doc('check_health_status')
-#     def get(self):
-#         """Health Status"""
-#         return {'status': 200, 'message': "OK"}, status.HTTP_200_OK
+
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
