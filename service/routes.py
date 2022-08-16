@@ -64,7 +64,7 @@ inventory_args.add_argument('product_id', type=int, required=False, help='List i
 ######################################################################
 #  PATH: /inventories/{inventory_id}
 ######################################################################
-@api.route('/inventories/<inventory_id>')
+@api.route('/inventories/<int:inventory_id>')
 @api.param('inventory_id', 'The Inventory identifier')
 class InventoryResource(Resource):
     """
