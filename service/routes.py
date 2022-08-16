@@ -121,7 +121,7 @@ class InventoryResource(Resource):
         return '', status.HTTP_204_NO_CONTENT
 
     # ------------------------------------------------------------------
-    # RETRIEVE AN NEW INVENTORY 
+    # RETRIEVE AN NEW INVENTORY
     # ------------------------------------------------------------------
     @api.doc('read_an inventory based on inventory-id')
     @api.response(404, 'Inventory with id could not be found.')
