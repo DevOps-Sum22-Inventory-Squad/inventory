@@ -12,7 +12,6 @@ Describe what your service does here
 # # IMPORT DEPENDENCIES
 # ######################################################################
 
-from flask import jsonify, make_response
 from flask_restx import Resource, fields, reqparse
 from service.models import Inventory, RestockLevel, Condition
 from .utils import status  # HTTP Status Codes
@@ -98,9 +97,7 @@ class InventoryResource(Resource):
                 status.HTTP_404_NOT_FOUND,
                 f"Inventory with id '{inventory_id}' was not found.",
             )
-        # inventory.deserialize(request.get_json())
-        # inventory.id = inventory_id
-        # inventory.update()
+
         app.logger.debug('Payload = %s', api.payload)
         data = api.payload
         inventory.update(data)
@@ -128,7 +125,6 @@ class InventoryResource(Resource):
     # ------------------------------------------------------------------
     @api.doc('read_an inventory based on inventory-id')
     @api.response(404, 'Inventory with id could not be found.')
-    # @api.expect(inventory_model)
     @api.marshal_with(inventory_model, code=200)
     def get(self, inventory_id):
         """
@@ -144,7 +140,6 @@ class InventoryResource(Resource):
                 f"Inventory with id '{inventory_id}' could not be found.",
             )
 
-        # return make_response(jsonify(inventory.serialize()), status.HTTP_200_OK)
         return inventory.serialize(), status.HTTP_200_OK
 
 
@@ -242,13 +237,16 @@ class ClearResource(Resource):
         return '', status.HTTP_204_NO_CONTENT
 
 
-############################################################
-# Health Endpoint
-############################################################
-@app.route("/health")
-def health():
-    """Health Status"""
-    return make_response(jsonify(status=200, message="OK"), status.HTTP_200_OK)
+######################################################################
+#  PATH: /health
+######################################################################
+@api.route('/health', strict_slashes=False)
+class HealthResource(Resource):
+    """ Handles routes to check health status """
+    @api.doc('check_health_status')
+    def get(self):
+        """Health Status"""
+        return {'status': 200, 'message': "OK"}, status.HTTP_200_OK
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S

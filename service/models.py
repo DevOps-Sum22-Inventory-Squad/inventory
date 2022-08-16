@@ -271,20 +271,6 @@ class Inventory(db.Model, PersistentBase):
 
         return cls.query.filter(*filter_list)
 
-    # @classmethod
-    # def find_by_inventory_id(cls, inventory_id) -> list:
-    #     """Returns all of the Products in a condition
-
-    #     :param condition: the condition of the Products you want to match
-    #     :type condition: Enum
-
-    #     :return: a collection of Products in that condition
-    #     :rtype: list
-
-    #     """
-    #     logger.info("Processing product query for %s ...", inventory_id)
-    #     return cls.query.filter(cls.inventory_id == inventory_id)
-
     @classmethod
     def find_by_restock_level(cls, restock_level: IntEnum) -> list:
         """Returns all of the Products in a restock_level
