@@ -8,7 +8,7 @@
 This is a ducumentation for the inventory services our team is going to build.
 
 ## Overview
- The `/service` folder contains our `models.py` file for our model and a `routes.py` file for our service. The `/tests` folder has test case code for testing our model and the service separately. 
+ The `/service` folder contains our `models.py` file for our model and a `routes.py` file for our service. The `/tests` folder has test case code for testing our model and the service separately.  
  [Service Homepage](http://169.51.205.194:31001/)
 
 ## Contents
